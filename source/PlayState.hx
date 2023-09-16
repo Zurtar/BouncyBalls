@@ -37,9 +37,6 @@ class PlayState extends FlxState
 			circles.add(ball);
 		}
 
-		// elasticity defines how much movement we retain on collision ranging from 0 -> 1 (%!)
-		// 0 being no movement and 1 being all movement!
-
 		add(circles);
 		add(box);
 	}
@@ -62,3 +59,29 @@ class PlayState extends FlxState
 		return ball;
 	}
 }
+/**
+ * Ball 1:
+ *  - Falls fast has a failling trail with lines to show speed.
+ *  - Bounces several times but also changes shape with the bounce, causingit to go oblong
+ * 
+ * Ball 2:
+ *  - has impact effect
+ *  - falls slower but gives the impression of more force
+ *  - higher bounce/elasticity
+ * 
+ * Ball 3:
+ *  - has a dot trail falls like a heavy rock bounces once with another small bounce
+ *  - has X axis movement and rolls along the surface
+ * 
+ * Ball 4:
+ *  - Bounces several times as it moves along the X axis and then falls off
+ *  - has impact effect but not a forceful one, 
+ *  - almost tops at the top of its bounce 
+ *  - last to stop moving
+ * 
+ * Platform: 
+ *  - thin, immovable
+ *  - Retains hitbox/collison during spin <---- (annyoing to do, requires manually collision detection and calculations) 
+ * 
+ * source link: https://dribbble.com/shots/2327065-Bouncing-Balls/attachments/9246107?mode=media
+ */
