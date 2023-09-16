@@ -19,6 +19,7 @@ class PlayState extends FlxState
 	var box:FlxShapeBox;
 	var circles:FlxGroup = new FlxGroup();
 
+	// we'll need individual ones to get the same look as the example.
 	final globalGravity:Float = 300;
 
 	override public function create()
@@ -84,4 +85,8 @@ class PlayState extends FlxState
  *  - Retains hitbox/collison during spin <---- (annyoing to do, requires manually collision detection and calculations) 
  * 
  * source link: https://dribbble.com/shots/2327065-Bouncing-Balls/attachments/9246107?mode=media
+ * 
+ * Extras:
+ *  - Create a box of bouncing balls that interact with eachother, maybe allow the cursor to interact with them? 
+ *  - a "worm" moving across the screen which is made up of several bouncing bowls giving the apperance of a worm
  */
