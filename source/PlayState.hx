@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.addons.display.shapes.FlxShapeBox;
 import flixel.addons.display.shapes.FlxShapeCircle;
+import flixel.addons.effects.FlxTrail;
 import flixel.addons.ui.FlxButtonPlus;
 import flixel.group.FlxGroup;
 import flixel.tweens.FlxTween;
@@ -12,6 +13,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil.LineStyle;
+import haxe.Log;
 import openfl.display.SpreadMethod;
 
 class PlayState extends FlxState
@@ -20,24 +22,25 @@ class PlayState extends FlxState
 	var circles:FlxGroup = new FlxGroup();
 
 	// we'll need individual ones to get the same look as the example.
-	final globalGravity:Float = 300;
+	final globalGravity:Float = 600;
 
 	override public function create()
 	{
 		super.create();
 
-		box = new FlxShapeBox(0, 0, FlxG.width - 25, 10, {color: FlxColor.GRAY, thickness: 2}, FlxColor.GRAY);
+		box = new FlxShapeBox(0, 0, FlxG.width - 25, 10, {color: FlxColor.WHITE, thickness: 1}, FlxColor.WHITE);
 		box.screenCenter();
 		box.y += FlxG.height / 3;
 		box.immovable = true;
 
-		for (i in 0...10)
-		{
-			var ball = createBouncyBall(FlxG.random.int(0, FlxG.width - 10), FlxG.random.int(0, 25), FlxG.random.int(5, 50), FlxG.random.float(0.1, 0.8),
-				FlxG.random.color());
-			circles.add(ball);
-		}
+		var b1 = new BouncyBall(0, 0, 16, 0.70, FlxColor.GREEN);
+		b1.screenCenter(X);
 
+		var trail = new FlxTrail(b1, AssetPaths.ball_one_trial__png);
+
+		circles.add(b1);
+
+		add(trail);
 		add(circles);
 		add(box);
 	}
@@ -58,6 +61,36 @@ class PlayState extends FlxState
 		ball.elasticity = elasticity;
 
 		return ball;
+	}
+}
+
+class BouncyBall extends FlxShapeCircle
+{
+	/**
+	 * [Description]
+	 * @param x 
+	 * @param y 
+	 * @param radius 
+	 * @param elasticity 
+	 * @param color 
+	 */
+	override public function new(?x:Float = 0, ?y:Float = 0, radius:Float, ?elasticity:Float = 0.25, color:FlxColor)
+	{
+		super(x, y, radius, {color: color, thickness: 2}, color);
+		acceleration.y = 600;
+		this.elasticity = elasticity;
+	}
+
+	override function update(elapsed:Float)
+	{
+		// adds a stretch affect based on velocity; while ensuring at least a 1.0scale
+		scale.y = Math.max(1, 1 + velocity.y / 1000);
+
+		// this is an attempt at stopping the jumping effect
+		if (scale.y > 1.05 || scale.y < 0.95 || scale.y == 1)
+			updateHitbox();
+
+		super.update(elapsed);
 	}
 }
 /**
